@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Personal Portfolio</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  a {
+    color: #4CC9F0;
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus {
+    color: #3a94d6;
+    outline: none;
+  }
+  /* Container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 15px 60px;
+    flex: 1 0 auto;
+  }
+
+  /* Header and Navigation */
+  header {
+    background: #1f1f1f;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid #4CC9F0;
+  }
+  .nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #4CC9F0;
+    user-select: none;
+  }
+  nav {
+    position: relative;
+  }
+  ul.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  ul.nav-links li {
+    user-select: none;
+  }
+  ul.nav-links li a {
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  ul.nav-links li a:hover,
+  ul.nav-links li a.active {
+    background-color: #4CC9F0;
+    color: #121212;
+  }
+
+  /* Hamburger for mobile */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .hamburger div {
+    background: #4CC9F0;
+    height: 3px;
+    width: 25px;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+  /* Mobile menu */
+  @media (max-width: 600px) {
+    ul.nav-links {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: #1f1f1f;
+      flex-direction: column;
+      align-items: center;
+      display: none;
+      gap: 0;
+      border-top: 2px solid #4CC9F0;
+      z-index: 99;
+    }
+    ul.nav-links.show {
+      display: flex;
+    }
+    ul.nav-links li {
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid #333;
+      margin: 0;
+    }
+    ul.nav-links li a {
+      display: block;
+      padding: 15px 0;
+      font-size: 1.25rem;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+
+  /* Sections */
+  section {
+    padding: 40px 0;
+    scroll-margin-top: 70px;
+  }
+
+  /* About section */
+  #about h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #4CC9F0;
+  }
+  #about p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #ccc;
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .skill {
+    background: #4CC9F0;
+    color: #121212;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+
+  /* Projects section */
+  #projects h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #4CC9F0;
+    text-align: center;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 25px;
+  }
+  .project-card {
+    background: #222;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgb(76 201 240 / 0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-card:hover,
+  .project-card:focus-within {
+    box-shadow: 0 6px 18px rgb(76 201 240 / 0.8);
+    transform: translateY(-6px);
+  }
+  .project-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-bottom: 2px solid #4CC9F0;
+  }
+  .project-content {
+    padding: 15px 18px;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-title {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #4CC9F0;
+  }
+  .project-description {
+    color: #bbb;
+    font-size: 1rem;
+    flex-grow: 1;
+  }
+  .project-links {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+  .project-links a {
+    background: #4CC9F0;
+    color: #121212;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.25s ease;
+  }
+  .project-links a:hover,
+  .project-links a:focus {
+    background: #3a94d6;
+  }
+
+  /* Contact section */
+  #contact h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #4CC9F0;
+    text-align: center;
+  }
+  form.contact-form {
+    max-width: 440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  form.contact-form label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #aaa;
+  }
+  form.contact-form input,
+  form.contact-form textarea {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+  form.contact-form input:focus,
+  form.contact-form textarea:focus {
+    outline: 2px solid #4CC9F0;
+  }
+  form.contact-form button {
+    background: #4CC9F0;
+    border: none;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #121212;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  form.contact-form button:hover,
+  form.contact-form button:focus {
+    background: #3a94d6;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 12px 20px;
+    background: #1f1f1f;
+    color: #555;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-container" role="banner">
+    <div class="logo" tabindex="0">MyPortfolio</div>
+    <nav aria-label="Primary Navigation">
+      <div class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" role="button" tabindex="0">
+        <div></div><div></div><div></div>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about" class="active">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container" role="main">
+  <section id="about" tabindex="0" aria-label="About section">
+    <h1>Hi, I'm Jane Doe</h1>
+    <p>I'm a passionate web developer with expertise in building responsive, user-friendly websites and applications. I love crafting clean and modern interfaces with code that is both efficient and maintainable.</p>
+    <div class="skills" aria-label="Skills list">
+      <span class="skill">HTML</span>
+      <span class="skill">CSS</span>
+      <span class="skill">JavaScript</span>
+      <span class="skill">React</span>
+      <span class="skill">Node.js</span>
+      <span class="skill">Python</span>
+      <span class="skill">Git</span>
+    </div>
+  </section>
+
+  <section id="projects" tabindex="0" aria-label="Projects section">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+      <article class="project-card" tabindex="0" aria-label="Portfolio project: Weather App">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Weather App Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3 class="project-title">Weather App</h3>
+          <p class="project-description">A dynamic weather forecast app that uses an external API to show real-time conditions for any city worldwide.</p>
+          <div class="project-links">
+            <a href="https://github.com/janedoe/weather-app" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://janedoe.github.io/weather-app" target="_blank" rel="noopener noreferrer">Live Demo</a>
+          </div>
+        </div>
+      </article>
+      <article class="project-card" tabindex="0" aria-label="Portfolio project: Task Manager">
+        <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80" alt="Task Manager Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3 class="project-title">Task Manager</h3>
+          <p class="project-description">A productivity app to organize tasks and track progress with drag-and-drop sorting and local storage persistence.</p>
+          <div class="project-links">
+            <a href="https://github.com/janedoe/task-manager" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://janedoe.github.io/task-manager" target="_blank" rel="noopener noreferrer">Live Demo</a>
+          </div>
+        </div>
+      </article>
+      <article class="project-card" tabindex="0" aria-label="Portfolio project: E-Commerce Site">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="E-Commerce Site Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3 class="project-title">E-Commerce Site</h3>
+          <p class="project-description">A modern and responsive e-commerce storefront featuring product filtering, shopping cart, and checkout.</p>
+          <div class="project-links">
+            <a href="https://github.com/janedoe/ecommerce-site" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://janedoe.github.io/ecommerce-site" target="_blank" rel="noopener noreferrer">Live Demo</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" tabindex="0" aria-label="Contact section">
+    <h2>Contact Me</h2>
+    <form class="contact-form" aria-describedby="contact-desc" onsubmit="handleSubmit(event)" novalidate>
+      <p id="contact-desc" style="color: #bbb; font-size: 0.9rem; margin-bottom: 10px;">Feel free to reach out to me via this form or email at <a href="mailto:jane.doe@example.com">jane.doe@example.com</a>.</p>
+      <label for="name">Name *</label>
+      <input type="text" id="name" name="name" required aria-required="true" placeholder="Your full name" />
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required aria-required="true" placeholder="Your email address" />
+      <label for="message">Message *</label>
+      <textarea id="message" name="message" rows="4" required aria-required="true" placeholder="Your message here"></textarea>
+      <button type="submit">Send Message</button>
+      <p id="form-feedback" role="alert" aria-live="assertive" style="margin-top: 10px;"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  &copy; 2024 Jane Doe &mdash; All rights reserved.
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  hamburger.addEventListener('click', () => {
+    const shown = navLinks.classList.toggle('show');
+    hamburger.setAttribute('aria-expanded', shown);
+  });
+  hamburger.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      hamburger.click();
+    }
+  });
+
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section');
+  const navItems = document.querySelectorAll('ul.nav-links a');
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + window.innerHeight/3;
+    sections.forEach(section => {
+      if (scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section.offsetHeight) {
+        navItems.forEach(a => a.classList.remove('active'));
+        const activeLink = document.querySelector(`ul.nav-links a[href="#${section.id}"]`);
+        if(activeLink) activeLink.classList.add('active');
+      }
+    });
+  });
+
+  // Smooth scroll on nav link click
+  navItems.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      target.scrollIntoView({behavior: 'smooth'});
+      // Close mobile menu if open
+      if(navLinks.classList.contains('show')){
+        navLinks.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', false);
+      }
+    });
+  });
+
+  // Form submit handler (simulate submission)
+  function handleSubmit(e) {
+    e.preventDefault();
+    const feedback = document.getElementById('form-feedback');
+    const form = e.target;
+    if (!form.checkValidity()) {
+      feedback.textContent = 'Please fill out all required fields correctly.';
+      feedback.style.color = '#f44336'; // Red
+      return;
+    }
+    feedback.textContent = '';
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+    // Simulate sending (No real backend)
+    feedback.textContent = 'Sending your message...';
+    feedback.style.color = '#4CC9F0';
+    setTimeout(() => {
+      feedback.textContent = `Thanks for reaching out, ${name}! I'll get back to you soon.`;
+      form.reset();
+    }, 1800);
+  }
+</script>
+</body>
+</html>
